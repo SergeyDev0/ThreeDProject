@@ -1,14 +1,39 @@
-import '../css/global.css';
-import '../scss/global.scss';
+import "../css/global.css"
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-import Three from './three';
+const renderer = new THREE.WebGLRenderer({ alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
-document.addEventListener('DOMContentLoaded', () => {});
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(
+  90,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
 
-window.addEventListener('load', () => {
-  const canvas = document.querySelector('#canvas');
-
-  if (canvas) {
-    new Three(document.querySelector('#canvas'));
-  }
+camera.position.z = 40;
+const loader = new GLTFLoader();
+loader.load("../src/models/ImageToStl.com_chel.gltf", (glb) => {
+  scene.add(glb.scene);
+  glb.scene.rotation.x -= 1.35;
+  renderer.render(scene, camera);
 });
+
+const toplight = new THREE.DirectionalLight(0xffffff, 5);
+toplight.position.set(1, 1, 1.4)
+toplight.castShadow = true;
+scene.add(toplight);
+
+
+const light = new THREE.AmbientLight(0xc4c4c4, .7)
+
+scene.add(light);
+function animate() {
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
+}
+
+animate();
