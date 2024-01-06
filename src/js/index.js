@@ -16,7 +16,7 @@ const camera = new THREE.PerspectiveCamera(
 
 camera.position.z = 40;
 const loader = new GLTFLoader();
-loader.load("../src/models/ImageToStl.com_chel.gltf", (glb) => {
+loader.load("../src/models/chel.gltf", (glb) => {
   scene.add(glb.scene);
   glb.scene.rotation.x -= 1.35;
   renderer.render(scene, camera);
